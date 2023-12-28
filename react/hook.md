@@ -15,6 +15,34 @@ _우선 클래스 컴포넌트와 라이프 사이클 메서드를 이해해야 
 
 ![Alt text](life_cycle.png)
 
+1. 컴포넌트가 최초로 생성될 때 라이프 사이클
+   - constructor
+     클래스 생성자 메서드
+   - getDerivedStateFromProps
+     prop을 state에 할당
+   - render
+     컴포넌트를 렌더링
+   - componentDidMount
+     컴포넌트의 렌더링이 끝나고 호출되는 메서드, DOM의 속성을 읽거나 변경 가능, ajax 요청도 여기서 일어난다.
+
+</br>
+  
+2. 컴포넌트가 업데이트 되었을 때 라이프 사이클
+   * getDerivedStateFromProps (
+    prop을 state에 할당
+   * shouldComponentUpdate
+    컴포넌트가 리렌더링 할지 말지를 결정하는 메서드
+   * render
+   * getSnapshotBeforeUpdate
+   컴포넌트에 변화가 일어나기 직전의 DOM 상태를 가져와서 특정 값을 반환하면 그 다음 발생하게 되는 componentDidUpdate 함수에서 받아와서 사용을 할 수 있다 
+   * componentDidUpdate 
+   리렌더링이 마치고, 화면에 우리가 원하는 변화가 모두 반영되고 난 뒤 호출되는 메서드. 3번째 파라미터로 getSnapshotBeforeUpdate 에서 반환한 값을 조회 할 수 있다.
+
+</br>
+3. 컴포넌트가 제거 될 때 라이프 사이클
+   * componentWillUnmount
+   포넌트가 화면에서 사라지기 직전에 호출, 주로 DOM에 바인딩한 이벤트 제거
+
 ### 함수형 컴포넌트와 클래스형 컴포넌트는 어떤 차이가 있나요?
 
 ### 그렇다면 왜 요즘에는 함수형 컴포넌트를 많이 쓰나요?
@@ -25,7 +53,7 @@ _우선 클래스 컴포넌트와 라이프 사이클 메서드를 이해해야 
 
 ### 훅이 뭔가요?
 
-Hook은 함수 컴포넌트에서 React state와 생명주기(lifecycle)를 “연동(hook into)“할 수 있게 해주는 함수입니다. Hook은 class 안에서는 동작하지 않습니다. 대신 class 없이 React를 사용할 수 있게 해주는 것입니다. 훅의 등장으로 인해 class 컴포넌트의 한계를 극복할 수 있게 되었습니다.
+Hook은 함수 컴포넌트에서 React state와 생명주기(lifecycle)를 “연동(hook into)“할 수 있게 해주는 함수입니다. 즉 라이프 사이클 메서드를 쉽게 사용할 수 있도록 만든 함수. 훅으로 인해 class 없이 리액트 컴포넌트를 작성할 수 있게 되었다.
 
 ### 훅의 동작 순서는 어떻게 되나요?
 

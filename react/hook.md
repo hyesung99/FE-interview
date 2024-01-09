@@ -4,6 +4,7 @@
 
 ### 레퍼런스
 
+https://ko.legacy.reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components
 https://ko.legacy.reactjs.org/docs/hooks-intro.html#gradual-adoption-strategy
 https://react.vlpt.us/basic/25-lifecycle.html
 
@@ -87,11 +88,71 @@ _우선 클래스 컴포넌트와 라이프 사이클 메서드를 이해해야 
 
 ## useState는 어떻게 동작하나요?
 
-useState는 상태를 병합하는 것이 아닌 대체한다
-ex)
+useState는 state와 setState를 반환한다.
 
-```js
-const [state, setState] = useState({ name: 'jane', age: 20 })
-setState({ age: 21 })
-console.log(state) // {age: 21}
+```tsx
+const [state, setState] = useState(initialState)
 ```
+
+여기서 주목할 점은 state는 const로 선언된다는 것이다. 즉 state는 한번의 함수 실행에서 불변성을 유지한다. 하지만 위에서 말했듯이 함수형 컴포넌트에서도 상태를 관리해야 한다.
+따라서 state는 closure로 관리된다.
+
+```tsx
+// Example 2
+const MyReact = (function () {
+  let _val // hold our state in module scope
+  return {
+    render(Component) {
+      const Comp = Component()
+      Comp.render()
+      return Comp
+    },
+    useState(initialValue) {
+      _val = _val || initialValue // assign anew every run
+      function setState(newVal) {
+        _val = newVal
+      }
+      return [_val, setState]
+    },
+  }
+})()
+```
+
+위 코드처럼 함수 컴포넌트의 실행이 끝나도 \_val에 의해 상태가 메모리에 유지된다.
+setState를 실행하면 \_val에 새로운 값을 할당한다.
+
+이를 통해 함수형 컴포넌트 내부에서 불변성을 유지하며 상태를 관리하게 된다.
+
+실제 리액트에서는 각 컴포넌트와 관련된 메모리 셀 내부에 상태를 저장한다. 메모리 셀은 js객체이다.
+
+## useState는 여러 컴포넌트에서 실행할텐데, 어떻게 각 컴포넌트와 상태를 연결하나요?
+
+리액트는 현재 렌더링된 컴포넌트를 추적합니다. 위에서 말했듯이 리액트 state는 메모리 셀에 저장되어 있다. useState같은 훅을 호출하면 현재 셀을 읽은 뒤 포인터를 다음 셀로 이동시킨다. 이렇게 useState()는 독립적은 state를 가진다.
+
+## setState를 한 컴포넌트에서 호출할 때마다 리렌더링이 일어나나요?
+
+```tsx
+function Counter() {
+  const [count, setCount] = useState(0)
+  setCount(count + 1)
+  setCount(count + 1)
+  setCount(count + 1)
+}
+```
+
+기본적으로 함수형 컴포넌트는 setState()를 실행하면 컴포넌트를 re-render하여 변경된 상태가 적용된 컴포넌트를 반환한다. 위 예제에서 그렇다면 setCount()를 세번 실행했으니 3번 리렌더링이 일어날 것이라고 예측할 수 있다.
+
+하지만 리액트는 이런 경우를 최적화하여 한번만 리렌더링이 일어나도록 한다. 이를 배칭이라고 한다.
+
+## 배칭(batching)이란 무엇인가요?
+
+배칭은 리액트가 더 나은 성능을 위해 여러 setState()를 한번에 처리하는 것을 말한다.
+배칭을 사용하여 여러번의 setState()호출을 묶어 한번의 리렌더링으로 처리한다.
+
+또한 모든 상태 변경을 호출 한 뒤 리렌더링을 하기 때문에 반만 완료된 상태로 리렌더링 되는 것을 방지한다.
+
+리액트 18 이전까지, React 이벤트 핸들러 내부에서 발생하는 업데이트만 배칭을 하였다. Promise, setTimeout, native 이벤트 핸들러, 그리고 여타 모든 이벤트 내부에서 발생하는 업데이트들은 React에서 배칭되지 않았다.
+
+React 18의 createRoot를 통해, 모든 업데이트들은 어디서 왔는가와 무관하게 자동으로 배칭되게 된다.
+
+## 배칭은 어떻게 동작하나요? ( 와 진짜 여기까지 물어볼까? )

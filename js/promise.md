@@ -108,8 +108,6 @@ then메서드가 프로미스를 반환하기 때문이다. then메서드에서 
 
 ### Q. 프로미스의 API에 대해 설명해주세요
 
-reference : https://ko.javascript.info/promise-api
-
 #### Promise.all
 
 Promise.all은 프로미스 배열을 받고 새로운 프로미스 객체를 반환한다.
@@ -195,3 +193,8 @@ await은 프로미스 앞에서 사용되며 프로미스가 처리될 때까지
 then/catch/finally 프로미스 체이닝은 함수가 옆으로 길어지는 콜백 지옥은 해결해주지만 코드가 아래로 길어지기도 한다
 
 async/await은 프로미스 체이닝을 사용할 때와 같이 코드가 아래로 길어지는 것을 해결해주며 좀 더 직관적인 코드를 작성할 수 있기 때문에 async/await 사용을 선호한다.
+
+## reference
+
+https://ko.javascript.info/promise-api
+https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise

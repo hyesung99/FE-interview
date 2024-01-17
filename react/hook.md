@@ -2,12 +2,6 @@
 
 자세한 훅 사용법은 담지 않음. 사용법은 공식문서 참조!
 
-### 레퍼런스
-
-https://ko.legacy.reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components
-https://ko.legacy.reactjs.org/docs/hooks-intro.html#gradual-adoption-strategy
-https://react.vlpt.us/basic/25-lifecycle.html
-
 <hr/>
 
 _우선 클래스 컴포넌트와 라이프 사이클 메서드를 이해해야 훅의 등장배경과 목적을 알 수 있다._
@@ -156,3 +150,9 @@ function Counter() {
 React 18의 createRoot를 통해, 모든 업데이트들은 어디서 왔는가와 무관하게 자동으로 배칭되게 된다.
 
 ## 배칭은 어떻게 동작하나요? ( 와 진짜 여기까지 물어볼까? )
+
+### Reference
+
+https://ko.legacy.reactjs.org/docs/hooks-faq.html#how-does-react-associate-hook-calls-with-components
+https://ko.legacy.reactjs.org/docs/hooks-intro.html#gradual-adoption-strategy
+https://github.com/facebook/react
